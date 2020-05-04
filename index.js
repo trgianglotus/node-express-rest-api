@@ -22,12 +22,17 @@ app.use(bodyParser.json());
 
 // HTTP headers
 app.use(helmet());
+
+// rate limit setup
 const limiter = new RateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit of number of request per IP
   delayMs: 0,
 });
-// rate limit setup
+
+// CSRF setup
+
+// cookie setup
 
 // JWT setup
 app.use((req, res, next) => {
