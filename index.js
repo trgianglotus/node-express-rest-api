@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import jsonwebtoken from "jsonwebtoken";
+import RateLimit from "express-rate-limit";
 import helmet from "helmet";
 import routes from "./src/routes/crmRoutes";
 
@@ -18,7 +19,16 @@ mongoose.connect("mongodb://localhost/CRMdb", {
 // bodyparser setup
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+// HTTP headers
 app.use(helmet());
+const limiter = new RateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit of number of request per IP
+  delayMs: 0,
+});
+// rate limit setup
+
 // JWT setup
 app.use((req, res, next) => {
   if (
